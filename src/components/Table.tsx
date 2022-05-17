@@ -2,11 +2,14 @@ import React from "react";
 
 type Props = {
     data: { id: string; name: string; status: string }[];
+    onRemove: (id: string) => void;
 };
 
 const Table = (props: Props) => {
     const { data } = props;
-
+    const handleRemove = (id: string) => {
+        props.onRemove(id);
+    };
     return (
         <table className="table table-bordered table-hover">
             <thead>
@@ -51,7 +54,11 @@ const Table = (props: Props) => {
                                 Sửa
                             </button>
                             &nbsp;
-                            <button type="button" className="btn btn-danger">
+                            <button
+                                type="button"
+                                className="btn btn-danger"
+                                onClick={() => handleRemove(item.id)}
+                            >
                                 <span className="fa fa-trash mr-5"></span>
                                 Xóa
                             </button>

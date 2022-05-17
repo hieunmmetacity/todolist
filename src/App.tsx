@@ -8,7 +8,6 @@ import Table from "./components/Table";
 
 function App() {
     const [todoList, setTodoList] = useState<any>([]);
-    console.log(todoList);
 
     const [isAdd, setIsAdd] = useState(false);
     const handleClickAdd = () => {
@@ -21,6 +20,11 @@ function App() {
     const handleAdd = (data: { id: string; job: string; status: boolean }) => {
         setTodoList([...todoList, data]);
     };
+    // Remove todo
+    const handleRemove = (id: string) => {
+        setTodoList(todoList.filter((item: any) => item.id !== id));
+    };
+
     return (
         <div className="App">
             <div className="container">
@@ -51,7 +55,10 @@ function App() {
                             </div>
 
                             <div className="mt-4">
-                                <Table data={todoList} />
+                                <Table
+                                    data={todoList}
+                                    onRemove={handleRemove}
+                                />
                             </div>
                         </div>
                     </div>

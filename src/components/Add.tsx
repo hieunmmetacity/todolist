@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { ElementType, useState } from "react";
 import { getUuid } from "../utils/uuid";
 
 type Props = {
@@ -9,9 +9,16 @@ type Props = {
 const Add = (props: Props) => {
     const [status, setStatus] = useState(true);
 
+    // close box form add
     const handleClickClose = () => {
         props.click();
     };
+    //Reset form add
+    const handleReset = () => {
+        const formAdd: any = document.querySelector("#formAdd");
+        if (formAdd) formAdd.reset();
+    };
+    // Send data to app
     const handleSubmit = (e: any) => {
         e.preventDefault();
         const data = {
@@ -20,6 +27,8 @@ const Add = (props: Props) => {
             status,
         };
         props.onAdd(data);
+        const formAdd: any = document.querySelector("#formAdd");
+        if (formAdd) formAdd.reset();
     };
     return (
         <div className="col-xs-4 col-sm-4 col-md-4 col-lg-4">
@@ -36,7 +45,7 @@ const Add = (props: Props) => {
                     </h3>
                 </div>
                 <div className="panel-body">
-                    <form onSubmit={handleSubmit}>
+                    <form onSubmit={handleSubmit} id="formAdd">
                         <div className="form-group">
                             <label>Tên :</label>
                             <input
@@ -65,7 +74,11 @@ const Add = (props: Props) => {
                                 Lưu Lại
                             </button>
                             &nbsp;
-                            <button type="button" className="btn btn-danger">
+                            <button
+                                type="button"
+                                className="btn btn-danger"
+                                onClick={handleReset}
+                            >
                                 <span className="fa fa-close mr-5"></span>
                                 Hủy Bỏ
                             </button>
