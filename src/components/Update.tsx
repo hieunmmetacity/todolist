@@ -1,41 +1,37 @@
-import React, { ElementType, useState } from "react";
-import { getUuid } from "../utils/uuid";
+import React, { useEffect, useState } from "react";
 
 type Props = {
     click: () => void;
-    onAdd: (data: any) => void;
+    todoUpdate: { id: string; name: string; status: string };
 };
 
-const Add = (props: Props) => {
+const Update = ({ todoUpdate, click }: any) => {
     const [status, setStatus] = useState(true);
+    const [todo, setTodo] = useState<any>(todoUpdate);
+    useEffect(() => {
+        setTodo(todoUpdate);
+    }, [todoUpdate.id]);
+    // console.log("todoUpdate", todoUpdate);
 
-    // close box form add
+    // console.log(todo);
+
     const handleClickClose = () => {
-        props.click();
+        click();
     };
-    //Reset form add
     const handleReset = () => {
         const formAdd: any = document.querySelector("#formAdd");
         if (formAdd) formAdd.reset();
     };
-    // Send data to app
-    const handleSubmit = (e: any) => {
-        e.preventDefault();
-        const data = {
-            id: getUuid(),
-            name: e.target[0].value,
-            status,
-        };
-        props.onAdd(data);
-        const formAdd: any = document.querySelector("#formAdd");
-        if (formAdd) formAdd.reset();
-    };
+    const handleSubmit = () => {};
+    console.log("update", todoUpdate);
+    console.log("todo", todo);
+
     return (
         <div className="col-xs-4 col-sm-4 col-md-4 col-lg-4">
             <div className="panel panel-warning border p-4">
                 <div className="panel-heading">
                     <h3 className="panel-title d-flex justify-content-between">
-                        <div>Thêm Công Việc</div>
+                        <div>Cập nhật Công Việc</div>
                         <div>
                             <span
                                 className="fa fa-times-circle"
@@ -52,6 +48,7 @@ const Add = (props: Props) => {
                                 type="text"
                                 className="form-control"
                                 name="name"
+                                defaultValue={todo.name}
                             />
                         </div>
                         <label>Trạng Thái :</label>
@@ -90,4 +87,4 @@ const Add = (props: Props) => {
     );
 };
 
-export default Add;
+export default Update;

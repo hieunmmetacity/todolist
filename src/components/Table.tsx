@@ -2,13 +2,20 @@ import React from "react";
 
 type Props = {
     data: { id: string; name: string; status: string }[];
+    click: () => void;
     onRemove: (id: string) => void;
+    onUpdate: (id: string) => void;
 };
 
 const Table = (props: Props) => {
     const { data } = props;
     const handleRemove = (id: string) => {
         props.onRemove(id);
+    };
+    // handle open box update
+    const handleClickUpdate = (id: string) => {
+        props.onUpdate(id);
+        props.click();
     };
     return (
         <table className="table table-bordered table-hover">
@@ -49,7 +56,11 @@ const Table = (props: Props) => {
                             </span>
                         </td>
                         <td className="text-center">
-                            <button type="button" className="btn btn-warning">
+                            <button
+                                type="button"
+                                className="btn btn-warning"
+                                onClick={() => handleClickUpdate(item.id)}
+                            >
                                 <span className="fa fa-pencil mr-5"></span>
                                 Sửa
                             </button>
