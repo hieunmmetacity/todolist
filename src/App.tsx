@@ -5,17 +5,28 @@ import Filter from "./components/Filter";
 import Header from "./components/Header";
 import Search from "./components/Search";
 import Table from "./components/Table";
+import Update from "./components/Update";
 
 function App() {
+    //data
     const [todoList, setTodoList] = useState<any>([]);
 
-    const [isAdd, setIsAdd] = useState(false);
+    const [todoUpdate, setTodoUpdate] = useState<any>();
+    //condition show Box add or update
+    const [statusBox, setStatusBox] = useState({ status: false, action: "" });
+    //when click btn add
     const handleClickAdd = () => {
-        setIsAdd(!isAdd);
+        setStatusBox({ status: !statusBox.status, action: "add" });
     };
+    //when click btn close
     const handleClickClose = () => {
-        setIsAdd(!isAdd);
+        setStatusBox({ status: !statusBox, action: "" });
     };
+    //when click btn update
+    const handleClickUpdate = () => {
+        setStatusBox({ status: true, action: "update" });
+    };
+    /*================== Work with data =============*/
     // Add Todo
     const handleAdd = (data: { id: string; job: string; status: boolean }) => {
         setTodoList([...todoList, data]);
@@ -27,19 +38,31 @@ function App() {
             setTodoList(todoList.filter((item: any) => item.id !== id));
         }
     };
-
+    // Update todo
+    const handleUpdate = (id: string) => {
+        const todo = todoList.find((item: any) => item.id === id);
+        setTodoUpdate(todo);
+    };
     return (
         <div className="App">
             <div className="container">
                 <Header />
                 <main>
                     <div className="row">
-                        {isAdd && (
+                        {statusBox.status && statusBox.action === "add" ? (
                             <Add click={handleClickClose} onAdd={handleAdd} />
+                        ) : statusBox.status &&
+                          statusBox.action === "update" ? (
+                            <Update
+                                click={handleClickClose}
+                                todoUpdate={todoUpdate}
+                            />
+                        ) : (
+                            ""
                         )}
                         <div
                             className={
-                                isAdd
+                                statusBox.status
                                     ? "col-xs-8 col-sm-8 col-md-8 col-lg-8"
                                     : "col-xs-12 col-sm-12 col-md-12 col-lg-12"
                             }
@@ -61,6 +84,8 @@ function App() {
                                 <Table
                                     data={todoList}
                                     onRemove={handleRemove}
+                                    click={handleClickUpdate}
+                                    onUpdate={handleUpdate}
                                 />
                             </div>
                         </div>
