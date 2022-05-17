@@ -22,7 +22,10 @@ function App() {
     };
     // Remove todo
     const handleRemove = (id: string) => {
-        setTodoList(todoList.filter((item: any) => item.id !== id));
+        const isRemove = window.confirm("Are you sure you want to remove");
+        if (isRemove) {
+            setTodoList(todoList.filter((item: any) => item.id !== id));
+        }
     };
 
     return (

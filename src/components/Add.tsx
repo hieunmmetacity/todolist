@@ -31,7 +31,7 @@ const Add = (props: Props) => {
         if (formAdd) formAdd.reset();
     };
     return (
-        <div className="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+        <div className="col-xs-4 col-sm-4 col-md-4 col-lg-4 border p-4">
             <div className="panel panel-warning">
                 <div className="panel-heading">
                     <h3 className="panel-title d-flex justify-content-between">
