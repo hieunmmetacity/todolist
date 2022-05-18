@@ -1,4 +1,4 @@
-import React, { ElementType, useState } from "react";
+import React, { useRef, useState } from "react";
 import { getUuid } from "../utils/uuid";
 
 type Props = {
@@ -7,28 +7,25 @@ type Props = {
 };
 
 const Add = (props: Props) => {
-    const [status, setStatus] = useState(true);
-
+    const name = useRef<any>();
+    const status = useRef<any>();
     // close box form add
     const handleClickClose = () => {
         props.click();
     };
     //Reset form add
     const handleReset = () => {
-        const formAdd: any = document.querySelector("#formAdd");
-        if (formAdd) formAdd.reset();
+        name.current.value = "";
+        status.current.value = "1";
     };
     // Send data to app
-    const handleSubmit = (e: any) => {
-        e.preventDefault();
+    const handleClickSubmit = () => {
         const data = {
             id: getUuid(),
-            name: e.target[0].value,
-            status,
+            name: name.current.value,
+            status: status.current.value,
         };
         props.onAdd(data);
-        const formAdd: any = document.querySelector("#formAdd");
-        if (formAdd) formAdd.reset();
     };
     return (
         <div className="col-xs-4 col-sm-4 col-md-4 col-lg-4">
@@ -45,45 +42,38 @@ const Add = (props: Props) => {
                     </h3>
                 </div>
                 <div className="panel-body">
-                    <form onSubmit={handleSubmit} id="formAdd">
-                        <div className="form-group">
-                            <label>Tên :</label>
-                            <input
-                                type="text"
-                                className="form-control"
-                                name="name"
-                            />
-                        </div>
-                        <label>Trạng Thái :</label>
-                        <select
+                    <div className="form-group">
+                        <label>Tên :</label>
+                        <input
+                            type="text"
                             className="form-control"
-                            name="status"
-                            onChange={(e: any) => {
-                                const status =
-                                    e.target.value === 1 ? true : false;
-                                setStatus(status);
-                            }}
+                            ref={name}
+                        />
+                    </div>
+                    <label>Trạng Thái :</label>
+                    <select className="form-control" ref={status}>
+                        <option value={1}>Kích hoạt</option>
+                        <option value={0}>Ẩn</option>
+                    </select>
+                    <br />
+                    <div className="text-center">
+                        <button
+                            className="btn btn-warning"
+                            onClick={handleClickSubmit}
                         >
-                            <option value={1}>Kích hoạt</option>
-                            <option value={0}>Ẩn</option>
-                        </select>
-                        <br />
-                        <div className="text-center">
-                            <button type="submit" className="btn btn-warning">
-                                <span className="fa fa-plus mr-5"></span>
-                                Lưu Lại
-                            </button>
-                            &nbsp;
-                            <button
-                                type="button"
-                                className="btn btn-danger"
-                                onClick={handleReset}
-                            >
-                                <span className="fa fa-close mr-5"></span>
-                                Hủy Bỏ
-                            </button>
-                        </div>
-                    </form>
+                            <span className="fa fa-plus mr-5"></span>
+                            Lưu Lại
+                        </button>
+                        &nbsp;
+                        <button
+                            type="button"
+                            className="btn btn-danger"
+                            onClick={handleReset}
+                        >
+                            <span className="fa fa-close mr-5"></span>
+                            Hủy Bỏ
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>

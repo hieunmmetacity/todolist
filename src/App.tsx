@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./App.css";
 import Add from "./components/Add";
 import Filter from "./components/Filter";
@@ -22,7 +22,7 @@ function App() {
     const handleClickClose = () => {
         setStatusBox({ status: !statusBox, action: "" });
     };
-    //when click btn update
+    //show box when click btn update in Table Component
     const handleClickUpdate = () => {
         setStatusBox({ status: true, action: "update" });
     };
@@ -43,6 +43,11 @@ function App() {
         const todo = todoList.find((item: any) => item.id === id);
         setTodoUpdate(todo);
     };
+    // useEffect(()=>{
+
+    // },[todoUpdate])
+    // console.log("app", todoUpdate);
+
     return (
         <div className="App">
             <div className="container">

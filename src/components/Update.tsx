@@ -5,26 +5,29 @@ type Props = {
     todoUpdate: { id: string; name: string; status: string };
 };
 
-const Update = ({ todoUpdate, click }: any) => {
+const Update = (props: Props) => {
     const [status, setStatus] = useState(true);
-    const [todo, setTodo] = useState<any>(todoUpdate);
+    const [todo, setTodo] = useState<any>(() => {
+        console.log("re-render");
+        return props.todoUpdate;
+    });
     useEffect(() => {
-        setTodo(todoUpdate);
-    }, [todoUpdate.id]);
-    // console.log("todoUpdate", todoUpdate);
+        setTodo(props.todoUpdate);
+    }, [props.todoUpdate.id]);
+    // console.log("todoUpdate", props.todoUpdate);
+    console.log("todo", todo);
 
     // console.log(todo);
-
     const handleClickClose = () => {
-        click();
+        props.click();
     };
     const handleReset = () => {
         const formAdd: any = document.querySelector("#formAdd");
         if (formAdd) formAdd.reset();
     };
     const handleSubmit = () => {};
-    console.log("update", todoUpdate);
-    console.log("todo", todo);
+    // console.log("update", todoUpdate);
+    // console.log("todo", todo);
 
     return (
         <div className="col-xs-4 col-sm-4 col-md-4 col-lg-4">

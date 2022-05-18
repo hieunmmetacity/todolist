@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 type Props = {
     data: { id: string; name: string; status: string }[];
@@ -9,6 +9,7 @@ type Props = {
 
 const Table = (props: Props) => {
     const { data } = props;
+    //send id todo to app
     const handleRemove = (id: string) => {
         props.onRemove(id);
     };
@@ -17,6 +18,10 @@ const Table = (props: Props) => {
         props.onUpdate(id);
         props.click();
     };
+    // const handleClickUpdate = (id: string) => {
+    //     props.onUpdate(id);
+    //     props.click();
+    // };
     return (
         <table className="table table-bordered table-hover">
             <thead>
@@ -52,7 +57,7 @@ const Table = (props: Props) => {
                         <td>{item.name}</td>
                         <td className="text-center">
                             <span className="label label-danger">
-                                {item.status ? "Kích hoạt" : "Ẩn"}
+                                {item.status === "1" ? "Kích hoạt" : "Ẩn"}
                             </span>
                         </td>
                         <td className="text-center">
