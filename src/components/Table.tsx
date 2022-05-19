@@ -8,6 +8,7 @@ type Props = {
     onEdit: (id: string) => void;
     handleChangeStatus: (id: string) => void;
     handleFilterByStatus: (filterBy: any) => void;
+    handleChangeSearch: (searchValue: any) => void;
 };
 
 const Table = (props: Props) => {
@@ -31,6 +32,9 @@ const Table = (props: Props) => {
     const handleFilterByStatus = (e: any) => {
         props.handleFilterByStatus(e.target.value);
     };
+    const handleChangeSearch = (e: any) => {
+        props.handleChangeSearch(e.target.value);
+    };
     return (
         <table className="table table-bordered table-hover">
             <thead>
@@ -48,7 +52,7 @@ const Table = (props: Props) => {
                         <input
                             type="text"
                             className="form-control"
-                            name="filterName"
+                            onChange={handleChangeSearch}
                         />
                     </td>
                     <td>
