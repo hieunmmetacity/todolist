@@ -1,13 +1,24 @@
-import React from "react";
+import React, { useState } from "react";
 
-type Props = {};
+type Props = {
+    handleFilterByStatus: (status: string) => void;
+};
 
 const Filter = (props: Props) => {
+    const [showIconClicked, setShowIconClicked] = useState("");
+    const handleFilterByStatus = (status: string) => {
+        props.handleFilterByStatus(status);
+        if (status === "active") {
+            setShowIconClicked("active");
+        } else if (status == "hide") {
+            setShowIconClicked("hide");
+        }
+    };
     return (
         <div className="col-xs-6 col-sm-6 col-md-6 col-lg-6">
             <div className="dropdown">
                 <button
-                    className="btn btn-secondary dropdown-toggle"
+                    className="btn btn-success dropdown-toggle"
                     type="button"
                     id="dropdownMenuButton1"
                     data-bs-toggle="dropdown"
@@ -20,27 +31,47 @@ const Filter = (props: Props) => {
                     aria-labelledby="dropdownMenuButton1"
                 >
                     <li>
-                        <a className="dropdown-item" href="#">
+                        <span className="dropdown-item">
                             Tên A-Z
-                        </a>
+                            {showIconClicked === "" ? (
+                                <i className="fa-solid fa-check ml-4"></i>
+                            ) : (
+                                ""
+                            )}
+                        </span>
                     </li>
                     <li>
-                        <a className="dropdown-item" href="#">
+                        <span className="dropdown-item">
                             Tên Z-A
-                        </a>
+                            {showIconClicked === "za" ? (
+                                <i className="fa-solid fa-check ml-4"></i>
+                            ) : (
+                                ""
+                            )}
+                        </span>
                     </li>
                     <li>
                         <hr className="dropdown-divider" />
                     </li>
-                    <li>
-                        <a className="dropdown-item" href="#">
+                    <li onClick={() => handleFilterByStatus("active")}>
+                        <span className="dropdown-item">
                             Trạng thái: Kích hoạt
-                        </a>
+                            {showIconClicked === "active" ? (
+                                <i className="fa-solid fa-check ml-4"></i>
+                            ) : (
+                                ""
+                            )}
+                        </span>
                     </li>
-                    <li>
-                        <a className="dropdown-item" href="#">
+                    <li onClick={() => handleFilterByStatus("hide")}>
+                        <span className="dropdown-item">
                             Trạng thái: Ẩn
-                        </a>
+                            {showIconClicked === "hide" ? (
+                                <i className="fa-solid fa-check ml-4"></i>
+                            ) : (
+                                ""
+                            )}
+                        </span>
                     </li>
                 </ul>
             </div>

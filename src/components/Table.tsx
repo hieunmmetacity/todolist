@@ -1,10 +1,13 @@
-import React, { useEffect } from "react";
+import React from "react";
+import Item from "./Item";
 
 type Props = {
     data: { id: string; name: string; status: string }[];
-    click: () => void;
+    clickBtnUpdate: () => void;
     onRemove: (id: string) => void;
-    onUpdate: (id: string) => void;
+    onEdit: (id: string) => void;
+    handleChangeStatus: (id: string) => void;
+    handleFilterByStatus: (filterBy: any) => void;
 };
 
 const Table = (props: Props) => {
@@ -14,14 +17,23 @@ const Table = (props: Props) => {
         props.onRemove(id);
     };
     // handle open box update
-    const handleClickUpdate = (id: string) => {
-        props.onUpdate(id);
-        props.click();
+    const handleClickEdit = (id: string) => {
+        props.onEdit(id);
+        props.clickBtnUpdate();
     };
     // const handleClickUpdate = (id: string) => {
     //     props.onUpdate(id);
     //     props.click();
     // };
+    const handleChangeStatus = (id: string) => {
+        props.handleChangeStatus(id);
+    };
+    const handleFilterByStatus = (e: any) => {
+        console.log(e.target.value);
+        console.log(props.data);
+
+        props.handleFilterByStatus(e.target.value);
+    };
     return (
         <table className="table table-bordered table-hover">
             <thead>
@@ -43,7 +55,11 @@ const Table = (props: Props) => {
                         />
                     </td>
                     <td>
-                        <select className="form-control" name="filterStatus">
+                        <select
+                            className="form-control"
+                            name="filterStatus"
+                            onChange={handleFilterByStatus}
+                        >
                             <option value="-1">Tất Cả</option>
                             <option value="0">Ẩn</option>
                             <option value="1">Kích Hoạt</option>
@@ -52,34 +68,14 @@ const Table = (props: Props) => {
                     <td></td>
                 </tr>
                 {data.map((item, index) => (
-                    <tr key={item.id}>
-                        <td>{index + 1}</td>
-                        <td>{item.name}</td>
-                        <td className="text-center">
-                            <span className="label label-danger">
-                                {item.status === "1" ? "Kích hoạt" : "Ẩn"}
-                            </span>
-                        </td>
-                        <td className="text-center">
-                            <button
-                                type="button"
-                                className="btn btn-warning"
-                                onClick={() => handleClickUpdate(item.id)}
-                            >
-                                <span className="fa fa-pencil mr-5"></span>
-                                Sửa
-                            </button>
-                            &nbsp;
-                            <button
-                                type="button"
-                                className="btn btn-danger"
-                                onClick={() => handleRemove(item.id)}
-                            >
-                                <span className="fa fa-trash mr-5"></span>
-                                Xóa
-                            </button>
-                        </td>
-                    </tr>
+                    <Item
+                        item={item}
+                        key={index}
+                        handleClickEdit={handleClickEdit}
+                        handleRemove={handleRemove}
+                        index={index}
+                        clickChangeStatus={handleChangeStatus}
+                    />
                 ))}
             </tbody>
         </table>

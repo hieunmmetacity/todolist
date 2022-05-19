@@ -1,17 +1,35 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { getUuid } from "../utils/uuid";
 
 type Props = {
-    click: () => void;
+    clickClose: () => void;
     onAdd: (data: any) => void;
+    todoUpdate: { id: string; name: string; status: string };
+    onUpdate: (data: any) => void;
+    action: string;
 };
 
-const Add = (props: Props) => {
+const Form = (props: Props) => {
+    // console.log(props.todoUpdate);
+
     const name = useRef<any>();
     const status = useRef<any>();
+    useEffect(() => {
+        if (props.action === "add") {
+            name.current.defaultValue = "";
+            status.current.value = "1";
+        }
+    }, [props.action]);
+    useEffect(() => {
+        if (props.action === "update") {
+            name.current.value = props.todoUpdate.name;
+            status.current.value = props.todoUpdate.status;
+        }
+    }, [props.todoUpdate]);
+
     // close box form add
     const handleClickClose = () => {
-        props.click();
+        props.clickClose();
     };
     //Reset form add
     const handleReset = () => {
@@ -20,19 +38,35 @@ const Add = (props: Props) => {
     };
     // Send data to app
     const handleClickSubmit = () => {
-        const data = {
-            id: getUuid(),
-            name: name.current.value,
-            status: status.current.value,
-        };
-        props.onAdd(data);
+        if (props.action === "add") {
+            const data = {
+                id: getUuid(),
+                name: name.current.value,
+                status: status.current.value,
+            };
+            console.log(data);
+            props.onAdd(data);
+            handleReset();
+        } else {
+            const data = {
+                id: props.todoUpdate.id,
+                name: name.current.value,
+                status: status.current.value,
+            };
+            console.log(data);
+            props.onUpdate(data);
+        }
     };
     return (
         <div className="col-xs-4 col-sm-4 col-md-4 col-lg-4">
             <div className="panel panel-warning border p-4">
                 <div className="panel-heading">
                     <h3 className="panel-title d-flex justify-content-between">
-                        <div>Thêm Công Việc</div>
+                        <div>
+                            {props.action === "add"
+                                ? "Thêm công việc"
+                                : "Cập nhật công việc"}
+                        </div>
                         <div>
                             <span
                                 className="fa fa-times-circle"
@@ -80,4 +114,4 @@ const Add = (props: Props) => {
     );
 };
 
-export default Add;
+export default Form;
