@@ -1,17 +1,26 @@
 import React, { useState } from "react";
 
 type Props = {
-    handleFilterByStatus: (status: string) => void;
+    handleSortByStatus: (status: string) => void;
+    handleSortByName: (status: string) => void;
 };
 
 const Filter = (props: Props) => {
     const [showIconClicked, setShowIconClicked] = useState("");
-    const handleFilterByStatus = (status: string) => {
-        props.handleFilterByStatus(status);
+    const handleSortByStatus = (status: string) => {
+        props.handleSortByStatus(status);
         if (status === "active") {
             setShowIconClicked("active");
         } else if (status == "hide") {
             setShowIconClicked("hide");
+        }
+    };
+    const handleSortByName = (status: string) => {
+        props.handleSortByName(status);
+        if (status === "az") {
+            setShowIconClicked("az");
+        } else if (status == "za") {
+            setShowIconClicked("za");
         }
     };
     return (
@@ -30,7 +39,7 @@ const Filter = (props: Props) => {
                     className="dropdown-menu"
                     aria-labelledby="dropdownMenuButton1"
                 >
-                    <li>
+                    <li onClick={() => handleSortByName("az")}>
                         <span className="dropdown-item">
                             Tên A-Z
                             {showIconClicked === "" ? (
@@ -40,7 +49,7 @@ const Filter = (props: Props) => {
                             )}
                         </span>
                     </li>
-                    <li>
+                    <li onClick={() => handleSortByName("za")}>
                         <span className="dropdown-item">
                             Tên Z-A
                             {showIconClicked === "za" ? (
@@ -53,9 +62,9 @@ const Filter = (props: Props) => {
                     <li>
                         <hr className="dropdown-divider" />
                     </li>
-                    <li onClick={() => handleFilterByStatus("active")}>
+                    <li onClick={() => handleSortByStatus("active")}>
                         <span className="dropdown-item">
-                            Trạng thái: Kích hoạt
+                            Trạng thái: Ẩn
                             {showIconClicked === "active" ? (
                                 <i className="fa-solid fa-check ml-4"></i>
                             ) : (
@@ -63,9 +72,9 @@ const Filter = (props: Props) => {
                             )}
                         </span>
                     </li>
-                    <li onClick={() => handleFilterByStatus("hide")}>
+                    <li onClick={() => handleSortByStatus("hide")}>
                         <span className="dropdown-item">
-                            Trạng thái: Ẩn
+                            Trạng thái: Kích hoạt
                             {showIconClicked === "hide" ? (
                                 <i className="fa-solid fa-check ml-4"></i>
                             ) : (

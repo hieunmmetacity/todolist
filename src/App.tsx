@@ -13,6 +13,7 @@ function App() {
     const [todoList, setTodoList] = useState<any>(todoLocalStorage || []);
     const [todoFilter, setTodoFilter] = useState<any>();
     const [todoUpdate, setTodoUpdate] = useState<any>();
+    const [isSort, setIsSort] = useState<boolean>(false);
 
     const [statusForm, setStatusForm] = useState({ status: false, action: "" });
 
@@ -28,7 +29,6 @@ function App() {
             setStatusForm({ status: !statusForm.status, action: "add" });
         }
     };
-    // console.log(statusForm);
 
     //when click btn close
     const handleClickClose = () => {
@@ -87,6 +87,7 @@ function App() {
                 (todo: any) => todo.status === "1"
             );
             setTodoFilter(newTodoList);
+            setIsSort(!isSort);
         } else if (filterBy === "0") {
             const newTodoList = todoList.filter(
                 (todo: any) => todo.status === "0"
@@ -96,8 +97,8 @@ function App() {
             setTodoFilter(todoList);
         }
     };
+    /* =================Search on Change======================== */
     const handleChangeSearch = (searchValue: string) => {
-        console.log(searchValue);
         if (searchValue !== "") {
             const newTodoList = todoFilter.filter((todo: any) =>
                 todo.name.toLowerCase().includes(searchValue.toLowerCase())
@@ -105,6 +106,52 @@ function App() {
             setTodoFilter(newTodoList);
         } else {
             setTodoFilter(todoList);
+        }
+    };
+    /* =================Sort by Status======================== */
+    const handleSortByStatus = (status: string) => {
+        console.log(status);
+        const todoSort = todoFilter;
+        if (status === "active") {
+            const newTodoList = todoSort.sort((a: any, b: any) => {
+                return a.status > b.status ? 1 : a.status < b.status ? -1 : 0;
+            });
+            console.log(todoList);
+            console.log(newTodoList);
+            setIsSort(!isSort);
+            setTodoFilter(newTodoList);
+        } else if (status === "hide") {
+            const newTodoList = todoSort.sort((a: any, b: any) => {
+                return a.status > b.status ? -1 : a.status < b.status ? 1 : 0;
+            });
+            console.log(todoList);
+            console.log(newTodoList);
+            setIsSort(!isSort);
+            setTodoFilter(newTodoList);
+        }
+    };
+    const handleSortByName = (status: string) => {
+        const todoSort = todoFilter;
+        if (status === "az") {
+            const newTodoList = todoSort.sort((a: any, b: any) => {
+                var alc = a.name.toLowerCase(),
+                    blc = b.name.toLowerCase();
+                return alc > blc ? 1 : alc < blc ? -1 : 0;
+            });
+            console.log(todoList);
+            console.log(newTodoList);
+            setIsSort(!isSort);
+            setTodoFilter(newTodoList);
+        } else if (status === "za") {
+            const newTodoList = todoSort.sort((a: any, b: any) => {
+                var alc = a.name.toLowerCase(),
+                    blc = b.name.toLowerCase();
+                return alc > blc ? -1 : alc < blc ? 1 : 0;
+            });
+            console.log(todoList);
+            console.log(newTodoList);
+            setIsSort(!isSort);
+            setTodoFilter(newTodoList);
         }
     };
     return (
@@ -140,7 +187,8 @@ function App() {
                             <div className="row">
                                 <Search />
                                 <Filter
-                                    handleFilterByStatus={handleFilterByStatus}
+                                    handleSortByStatus={handleSortByStatus}
+                                    handleSortByName={handleSortByName}
                                 />
                             </div>
 

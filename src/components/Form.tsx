@@ -10,8 +10,6 @@ type Props = {
 };
 
 const Form = (props: Props) => {
-    // console.log(props.todoUpdate);
-
     const name = useRef<any>();
     const status = useRef<any>();
     useEffect(() => {

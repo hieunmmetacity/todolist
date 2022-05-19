@@ -13,6 +13,8 @@ type Props = {
 
 const Table = (props: Props) => {
     const { data } = props;
+    console.log(data);
+
     //send id todo to app
     const handleRemove = (id: string) => {
         props.onRemove(id);
