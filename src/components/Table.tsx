@@ -29,9 +29,6 @@ const Table = (props: Props) => {
         props.handleChangeStatus(id);
     };
     const handleFilterByStatus = (e: any) => {
-        console.log(e.target.value);
-        console.log(props.data);
-
         props.handleFilterByStatus(e.target.value);
     };
     return (

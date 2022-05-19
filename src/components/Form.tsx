@@ -16,7 +16,7 @@ const Form = (props: Props) => {
     const status = useRef<any>();
     useEffect(() => {
         if (props.action === "add") {
-            name.current.defaultValue = "";
+            name.current.value = "";
             status.current.value = "1";
         }
     }, [props.action]);
@@ -44,7 +44,6 @@ const Form = (props: Props) => {
                 name: name.current.value,
                 status: status.current.value,
             };
-            console.log(data);
             props.onAdd(data);
             handleReset();
         } else {
@@ -53,7 +52,6 @@ const Form = (props: Props) => {
                 name: name.current.value,
                 status: status.current.value,
             };
-            console.log(data);
             props.onUpdate(data);
         }
     };

@@ -7,19 +7,15 @@ import Search from "./components/Search";
 import Table from "./components/Table";
 import { getTodoLocalStorage, setTodoLocalStorage } from "./utils/localStorage";
 
-const todoLocalStorage = getTodoLocalStorage();
-function App() {
-    const [todoList, setTodoList] = useState<any>(todoLocalStorage || []);
-    console.log(todoList);
+console.log("render");
 
-    const [todoFilter, setTodoFilter] = useState<any>();
-    console.log(todoFilter);
+function App() {
+    const todoLocalStorage = getTodoLocalStorage();
+    const [todoList, setTodoList] = useState<any>(todoLocalStorage || []);
 
     const [todoUpdate, setTodoUpdate] = useState<any>();
-    const [statusForm, setStatusForm] = useState({ status: false, action: "" });
 
-    //data
-    setTodoLocalStorage(todoList);
+    const [statusForm, setStatusForm] = useState({ status: false, action: "" });
 
     //condition show Box add or update
     //when click btn add
@@ -43,60 +39,77 @@ function App() {
     /*================== Work with data =============*/
     // Add Todo
     const handleAdd = (data: { id: string; job: string; status: boolean }) => {
-        setTodoList([...todoList, data]);
+        const todoListInLocalStorage = getTodoLocalStorage();
+        const newTodoList = [...todoListInLocalStorage, data];
+        setTodoList(newTodoList);
+        setTodoLocalStorage(newTodoList);
     };
     // Remove todo
     const handleRemove = (id: string) => {
+        const todoListInLocalStorage = getTodoLocalStorage();
         const isRemove = window.confirm("Are you sure you want to remove");
         if (isRemove) {
-            setTodoList(todoList.filter((item: any) => item.id !== id));
+            const newTodoList = todoListInLocalStorage.filter(
+                (item: any) => item.id !== id
+            );
+            setTodoList(newTodoList);
+            setTodoLocalStorage(newTodoList);
         }
     };
     // Edit todo
     const handleEdit = (id: string) => {
-        const todo = todoList.find((item: any) => item.id === id);
-        console.log(todo);
+        const todoListInLocalStorage = getTodoLocalStorage();
+        const todo = todoListInLocalStorage.find((item: any) => item.id === id);
         setTodoUpdate(todo);
     };
     // Update todo
     const handleUpdate = (data: any) => {
-        console.log("app", data);
-        const newTodoList = todoList.map((item: any) =>
+        const todoListInLocalStorage = getTodoLocalStorage();
+        const newTodoList = todoListInLocalStorage.map((item: any) =>
             item.id === data.id ? data : item
         );
         setTodoList(newTodoList);
+        setTodoLocalStorage(newTodoList);
     };
     // Click change status
     const handleChangeStatus = (id: string) => {
-        const currentTodo = todoList.find((item: any) => item.id === id);
+        const todoListInLocalStorage = getTodoLocalStorage();
+        const currentTodo = todoListInLocalStorage.find(
+            (item: any) => item.id === id
+        );
         if (currentTodo.status === "1") {
             currentTodo.status = "0";
         } else {
             currentTodo.status = "1";
         }
 
-        const newTodoList = todoList.map((item: any) =>
+        const newTodoList = todoListInLocalStorage.map((item: any) =>
             item.id === id ? currentTodo : item
         );
         setTodoList(newTodoList);
+        setTodoLocalStorage(newTodoList);
     };
     /* =================Filter======================== */
     const handleFilterByStatus = (filterBy: string) => {
-        console.log(filterBy);
+        const todoListInLocalStorage = getTodoLocalStorage();
+
         if (filterBy === "1") {
-            const newTodoList = todoList.filter(
+            const newTodoList = todoListInLocalStorage.filter(
                 (todo: any) => todo.status === "1"
             );
-            setTodoFilter(newTodoList);
+            setTodoList(newTodoList);
         } else if (filterBy === "0") {
-            const newTodoList = todoList.filter(
+            const newTodoList = todoListInLocalStorage.filter(
                 (todo: any) => todo.status === "0"
             );
-            setTodoFilter(newTodoList);
+            setTodoList(newTodoList);
         } else {
-            setTodoFilter(todoList);
+            const todoListInLocalStorage = getTodoLocalStorage();
+            setTodoList(todoListInLocalStorage);
+            // setTodoList(getTodoLocalStorage());
         }
     };
+
     return (
         <div className="App">
             <div className="container">
@@ -136,7 +149,7 @@ function App() {
 
                             <div className="mt-4">
                                 <Table
-                                    data={todoFilter ? todoFilter : todoList}
+                                    data={todoList}
                                     onRemove={handleRemove}
                                     clickBtnUpdate={handleClickBtnUpdate}
                                     onEdit={handleEdit}
